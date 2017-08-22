@@ -4,6 +4,7 @@ FiveM Installer is a package for FiveM Server (FX). This scripts download resour
 **La version française est en bas de la page.**
 
 Compatible resources list: https://github.com/qlaffont/fvm-installer-list/blob/master/README.md
+
 Liste des ressources compatible: https://github.com/qlaffont/fvm-installer-list/blob/master/README.md
 
 Installation
