@@ -7,7 +7,7 @@ var rimraf = require('rimraf');
 var path = require('path');
 
 module.exports = {
-  download_resource: function(resource, dataConfigFile, save) {
+  download_resource: function(resource, dataConfigFile, save, specifiedfolder) {
     var arraytosplit = resource.split("/");
     var resource_user = arraytosplit[0];
     var resource_name = arraytosplit[1].split("@")[0] || arraytosplit[1];
@@ -67,11 +67,20 @@ module.exports = {
             }, function(err) {
               fs.unlinkSync(path.join(process.cwd(),  "resourcedownloadedfvm.zip"));
               //Remove and put resource in folder
-              rimraf(path.join(process.cwd(),  "resources", resource_name), function() {
-                fs.rename(path.join(process.cwd(),  "resources", zipfolder), path.join(process.cwd(),  "resources", resource_name), function(err) {
+              var pathtoinstall = path.join(process.cwd(),  "resources", resource_name);
+
+              if(specifiedfolder != ""){
+                pathtoinstall = path.join(process.cwd(),  "resources", "[" + specifiedfolder + "]", resource_name, "/");
+                if (!fs.existsSync(path.join(process.cwd(),  "resources", "[" + specifiedfolder + "]"))){
+                    fs.mkdirSync(path.join(process.cwd(),  "resources", "[" + specifiedfolder + "]"));
+                }
+              }
+              rimraf(pathtoinstall, function() {
+
+                fs.rename(path.join(process.cwd(),  "resources", zipfolder), pathtoinstall, function(err) {
                   console.log("\n");
                   if(save){
-                    dataConfigFile.addResource(resource_user+"/"+resource_name, resource_version);
+                    dataConfigFile.addResource(resource_user+"/"+resource_name, resource_version, specifiedfolder);
                   }
                   resolve("Install Successful of "+resource_user+"/"+resource_name);
                 });
@@ -143,11 +152,25 @@ module.exports = {
             }, function(err) {
               fs.unlinkSync(path.join(process.cwd(),  "resourcedownloadedfvm.zip"));
               //Remove and put resource in folder
-              rimraf(path.join(process.cwd(),  "resources", resource_name), function() {
-                fs.rename(path.join(process.cwd(),  "resources", zipfolder), path.join(process.cwd(),  "resources", resource_name), function(err) {
+              var pathtoupdate = path.join(process.cwd(),  "resources", resource_name);
+
+              if(dataConfigFile.folder[resource_user+"/"+resource_name]){
+                pathtoupdate = path.join(process.cwd(),  "resources", "[" + dataConfigFile.folder[resource_user+"/"+resource_name] + "]", resource_name);
+
+                if (!fs.existsSync(path.join(process.cwd(),  "resources", "[" + dataConfigFile.folder[resource_user+"/"+resource_name] + "]"))){
+                    fs.mkdirSync(path.join(process.cwd(),  "resources", "[" + dataConfigFile.folder[resource_user+"/"+resource_name] + "]"));
+                }
+              }
+              rimraf(pathtoupdate, function() {
+
+                fs.rename(path.join(process.cwd(),  "resources", zipfolder), pathtoupdate, function(err) {
                   console.log("\n");
                   if(save){
-                    dataConfigFile.addResource(resource_user+"/"+resource_name, resource_version);
+                    if(dataConfigFile.folder[resource_user+"/"+resource_name]){
+                      dataConfigFile.addResource(resource_user+"/"+resource_name, resource_version, dataConfigFile.folder[resource_user+"/"+resource_name]);
+                    }else{
+                      dataConfigFile.addResource(resource_user+"/"+resource_name, resource_version, "");
+                    }
                   }
                   resolve("Update Successful of "+resource_user+"/"+resource_name);
                 });
@@ -164,7 +187,14 @@ module.exports = {
       var arraytosplit = resource.split("/");
       var resource_user = arraytosplit[0];
       var resource_name = arraytosplit[1].split("@")[0] || arraytosplit[1];
-      rimraf(path.join(process.cwd(),  "resources", resource_name), function() {
+
+      var pathtodelete = path.join(process.cwd(),  "resources", resource_name);
+
+      if(dataConfigFile.folder[resource]){
+        pathtodelete = path.join(process.cwd(),  "resources", "[" + dataConfigFile.folder[resource] + "]", resource_name)
+      }
+
+      rimraf(pathtodelete, function() {
         if (save){
           dataConfigFile.removeResource(resource);
         }

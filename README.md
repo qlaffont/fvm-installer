@@ -15,6 +15,9 @@ Options
 > --save
 > You can use *--save* option for (install/update/delete) to save installed script in scripts.json
 
+> --folder=<folder_name>
+> You can use *--folder* option for (install) to save installed script in dedicated folder.
+
 
 Usage
 --------------
@@ -41,7 +44,10 @@ Initialisation of FiveM Installer directory finish ! You can now use fvm install
 
 
 Install one or more packages in resources :
+
 *You can specify a version with resource_name@number. (Example: fivemtools/ft_ui@0.1)*
+
+You can specify a folder where your script can be saved with *--folder* option. (Example, here we register our script in resources/[ft]/ft_ui: fvm install fivemtools/ft_ui --save --folder=ft)
 
 ```sh
 λ fvm install fivemtools/ft_ui
@@ -110,7 +116,10 @@ npm install -g fvm-installer
 Options
 --------------
 > --save
-> Tu peux utiliser *--save* pour pouvoir avoir un fichier de configuration nommé scripts.json avec tous les scripts installés.
+> Tu peux utiliser *--save* pour pouvoir avoir un fichier de configuration nommé scripts.json avec tous les scripts installés (installation/mis à jour/suppression).
+
+> --folder=<folder_name>
+> Te permet d'installer ton script dans un dossier dédié (installation).
 
 
 Usage
@@ -139,6 +148,8 @@ Initialisation of FiveM Installer directory finish ! You can now use fvm install
 
 Installer une ou plusieurs ressources :
 *Tu peux spécifier la version avec nom_ressource@numéro_de_version. (Exemple: fivemtools/ft_ui@0.1)*
+
+Tu peux spécifier où le script peux être installer avec l'option *--folder*. (Exemple, ici on enregistre le script dans resources/[ft]/ft_ui:  fvm install fivemtools/ft_ui --save --folder=ft)
 
 ```sh
 λ fvm install fivemtools/ft_ui

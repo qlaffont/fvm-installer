@@ -12,6 +12,6 @@ module.exports = {
     return require(path.join(process.cwd(), "scripts.json"));
   },
   set_config_file: function(data){
-    fs.writeFileSync(path.join(process.cwd(), "scripts.json", data));
+    fs.writeFileSync(path.join(process.cwd(), "scripts.json"), data);
   }
 };

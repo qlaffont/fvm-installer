@@ -23,18 +23,20 @@ console.log("\n");
 
 var arguments = process.argv;
 var save = false;
+var specifiedfolder = "";
 
 //Helper
 if(arguments.length == 2){
   console.log("Usage: fvm <args>");
   console.log("\n");
   console.log("Arguments:\n");
-  console.log("  install (--save) <package_name> \t Install Github Package (Option Save : Save in scripts.json)");
-  console.log("  update \t\t\t\t Check if some packages can be upgraded");
-  console.log("  update (--save) <package_name> \t Update Package (Option Save : Save in scripts.json)");
-  console.log("  delete (--save) <package_name> \t Delete Package (Option Save : Save in scripts.json)");
+  console.log("  init  \t\t\t\t\t\t\t Initialise FiveM Installer directory");
+  console.log("  install (--save) (--folder=<folder_name>) <package_name> \t Install Github Package (Option Save : Save in scripts.json)");
+  console.log("  update \t\t\t\t\t\t\t Check if some packages can be upgraded");
+  console.log("  update (--save) <package_name> \t\t\t\t Update Package (Option Save : Save in scripts.json)");
+  console.log("  delete (--save) <package_name> \t\t\t\t Delete Package (Option Save : Save in scripts.json)");
   console.log("\n");
-  console.log(chalk.cyan("Package name format is : ") + chalk.bold.cyan("user/repo") + chalk.cyan(". Exemple: fivemtools/ft_ui"));
+  console.log(chalk.cyan("Package name format is : ") + chalk.bold.cyan("user/repo") + chalk.cyan(" (Source GitHub). Exemple: fivemtools/ft_ui"));
 }else {
   var operation = arguments[2];
 
@@ -54,13 +56,17 @@ if(arguments.length == 2){
           if(resource == "--save"){
             save = true;
           }
+
+          if(resource.substring(0, 9) == "--folder="){
+            specifiedfolder = resource.split("--folder=")[1];
+          }
         });
 
         //Can give multiple resources to install
         resourcestoinstall.forEach(function(resource){
-          if(resource != "--save"){
+          if(resource != "--save" && resource.substring(0, 9) != "--folder="){
             if(tools.check_resource_format(resource)){
-              promiseArray.push(tools.download_resource(resource, dataConfigFile, save));
+              promiseArray.push(tools.download_resource(resource, dataConfigFile, save, specifiedfolder));
             }else{
               console.log(chalk.red("Error: Resource Not Found ! Please provide a resource name with a good format : user/repository or user/repository@version"));
               console.log("\n");
@@ -86,7 +92,7 @@ if(arguments.length == 2){
         Object.keys(dataConfigFile.resources).forEach(function(key) {
             var resource = key + "@" +dataConfigFile.resources[key];
             if(tools.check_resource_format(resource)){
-              promiseArray.push(tools.download_resource(resource, dataConfigFile, save));
+              promiseArray.push(tools.download_resource(resource, dataConfigFile, save, dataConfigFile.folder[key]));
             }
           }
         );
@@ -121,7 +127,6 @@ if(arguments.length == 2){
         resourcestoupdate.forEach(function(resource){
           if(resource != "--save"){
             if(tools.check_resource_format(resource)){
-
               promiseArray.push(tools.update_resource(resource, dataConfigFile.resources[resource], dataConfigFile, save));
             }else{
               console.log(chalk.red("Error: Resource Not Found ! Please provide a resource name with a good format : user/repository or user/repository@version"));
