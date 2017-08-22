@@ -14,6 +14,6 @@ module.exports = {
     fs.writeFileSync(process.cwd() + "\\scripts.json", data);
   },
   remove_resource_folder: function(resourcename){
-    
+
   }
-}
+};
