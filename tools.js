@@ -4,6 +4,7 @@ var chalk = require('chalk');
 var fs = require('fs');
 var extract = require('extract-zip');
 var rimraf = require('rimraf');
+var path = require('path');
 
 module.exports = {
   download_resource: function(resource, dataConfigFile, save) {
@@ -57,17 +58,17 @@ module.exports = {
             var zipfolder = "";
 
             extract("resourcedownloadedfvm.zip", {
-              dir: process.cwd() + "\\resources",
+              dir: path.join(process.cwd(),  "resources"),
               onEntry: function(fileunzipped, zip) {
                 if (zipfolder == "") {
                   zipfolder = fileunzipped.fileName;
                 }
               }
             }, function(err) {
-
+              fs.unlinkSync(path.join(process.cwd(),  "resourcedownloadedfvm.zip"));
               //Remove and put resource in folder
-              rimraf(process.cwd() + "\\resources\\" + resource_name, function() {
-                fs.rename(process.cwd() + "/resources/" + zipfolder, process.cwd() + "/resources/" + resource_name, function(err) {
+              rimraf(path.join(process.cwd(),  "resources", resource_name), function() {
+                fs.rename(path.join(process.cwd(),  "resources", zipfolder), path.join(process.cwd(),  "resources", resource_name), function(err) {
                   console.log("\n");
                   if(save){
                     dataConfigFile.addResource(resource_user+"/"+resource_name, resource_version);
@@ -133,17 +134,17 @@ module.exports = {
             var zipfolder = "";
 
             extract("resourcedownloadedfvm.zip", {
-              dir: process.cwd() + "\\resources",
+              dir: path.join(process.cwd(),  "resources"),
               onEntry: function(fileunzipped, zip) {
                 if (zipfolder == "") {
                   zipfolder = fileunzipped.fileName;
                 }
               }
             }, function(err) {
-
+              fs.unlinkSync(path.join(process.cwd(),  "resourcedownloadedfvm.zip"));
               //Remove and put resource in folder
-              rimraf(process.cwd() + "\\resources\\" + resource_name, function() {
-                fs.rename(process.cwd() + "/resources/" + zipfolder, process.cwd() + "/resources/" + resource_name, function(err) {
+              rimraf(path.join(process.cwd(),  "resources", resource_name), function() {
+                fs.rename(path.join(process.cwd(),  "resources", zipfolder), path.join(process.cwd(),  "resources", resource_name), function(err) {
                   console.log("\n");
                   if(save){
                     dataConfigFile.addResource(resource_user+"/"+resource_name, resource_version);
@@ -163,7 +164,7 @@ module.exports = {
       var arraytosplit = resource.split("/");
       var resource_user = arraytosplit[0];
       var resource_name = arraytosplit[1].split("@")[0] || arraytosplit[1];
-      rimraf(process.cwd() + "\\resources\\" + resource_name, function() {
+      rimraf(path.join(process.cwd(),  "resources", resource_name), function() {
         if (save){
           dataConfigFile.removeResource(resource);
         }
