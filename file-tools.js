@@ -12,8 +12,5 @@ module.exports = {
   },
   set_config_file: function(data){
     fs.writeFileSync(process.cwd() + "\\scripts.json", data);
-  },
-  remove_resource_folder: function(resourcename){
-
   }
 };

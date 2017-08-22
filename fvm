@@ -50,14 +50,14 @@ if(arguments.length == 2){
 
         promiseArray = [];
 
-        resourcestoinstall.forEach(resource => {
+        resourcestoinstall.forEach(function(resource){
           if(resource == "--save"){
             save = true;
           }
         });
 
         //Can give multiple resources to install
-        resourcestoinstall.forEach(resource => {
+        resourcestoinstall.forEach(function(resource){
           if(resource != "--save"){
             if(tools.check_resource_format(resource)){
               promiseArray.push(tools.download_resource(resource, dataConfigFile, save));
@@ -69,11 +69,11 @@ if(arguments.length == 2){
           }
         });
 
-        Promise.all(promiseArray).then(values => {
+        Promise.all(promiseArray).then(function(values) {
           console.log("\n");
 
           console.log(chalk.green("Installation Successful !"));
-        }).catch(data => {
+        }).catch(function(data) {
           process.exit(0);
         });
 
@@ -83,7 +83,7 @@ if(arguments.length == 2){
 
         promiseArray = [];
 
-        Object.keys(dataConfigFile.resources).forEach(key => {
+        Object.keys(dataConfigFile.resources).forEach(function(key) {
             var resource = key + "@" +dataConfigFile.resources[key];
             if(tools.check_resource_format(resource)){
               promiseArray.push(tools.download_resource(resource, dataConfigFile, save));
@@ -91,11 +91,11 @@ if(arguments.length == 2){
           }
         );
 
-        Promise.all(promiseArray).then(values => {
+        Promise.all(promiseArray).then(function(values) {
           console.log("\n");
 
           console.log(chalk.green("Installation Successful !"));
-        }).catch(data => {
+        }).catch(function(data) {
           process.exit(0);
         });
       }
@@ -111,14 +111,14 @@ if(arguments.length == 2){
 
         promiseArray = [];
 
-        resourcestoupdate.forEach(resource => {
+        resourcestoupdate.forEach(function(resource){
           if(resource == "--save"){
             save = true;
           }
         });
 
         //Can give multiple resources to install
-        resourcestoupdate.forEach(resource => {
+        resourcestoupdate.forEach(function(resource){
           if(resource != "--save"){
             if(tools.check_resource_format(resource)){
 
@@ -131,9 +131,9 @@ if(arguments.length == 2){
           }
         });
 
-        Promise.all(promiseArray).then(values => {
+        Promise.all(promiseArray).then(function(values) {
           console.log(chalk.green("Update Successful !"));
-        }).catch(data => {
+        }).catch(function(data) {
           process.exit(0);
         });
       } else {
@@ -141,13 +141,13 @@ if(arguments.length == 2){
 
         promiseArray = [];
 
-        Object.keys(dataConfigFile.resources).forEach(key => {
+        Object.keys(dataConfigFile.resources).forEach(function(key) {
           promiseArray.push(tools.check_update_resource(key, dataConfigFile.resources[key]));
         });
 
-        Promise.all(promiseArray).then(values => {
+        Promise.all(promiseArray).then(function(values) {
           console.log("To upgrade packages, do " + chalk.green("fvm update <package_name>"));
-        }).catch(data => {
+        }).catch(function(data) {
           process.exit(0);
         });
       }
@@ -178,14 +178,14 @@ if(arguments.length == 2){
 
         promiseArray = [];
 
-        resourcestodelete.forEach(resource => {
+        resourcestodelete.forEach(function(resource){
           if(resource == "--save"){
             save = true;
           }
         });
 
         //Can give multiple resources to install
-        resourcestodelete.forEach(resource => {
+        resourcestodelete.forEach(function(resource){
           if(resource != "--save"){
             if(tools.check_resource_format(resource)){
               tools.deleteresource(resource, save, dataConfigFile)
