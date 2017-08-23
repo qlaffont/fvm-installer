@@ -54,6 +54,10 @@ module.exports = {
           console.log(zip_url);
 
           request.get(zip_url).parse(binaryParser).buffer().end(function(err, resp) {
+            if(err){
+              console.log(chalk.red("Please Try Again - Network Bug or Github Down"));
+              process.exit(0);
+            }
             if(!res.body){
               console.log(chalk.red("Please Try Again - Network Bug"));
               process.exit(0);
@@ -143,6 +147,10 @@ module.exports = {
           console.log(zip_url);
 
           request.get(zip_url).parse(binaryParser).buffer().end(function(err, resp) {
+            if(err){
+              console.log(chalk.red("Please Try Again - Network Bug or Github Down"));
+              process.exit(0);
+            }
             if(!res.body){
               console.log(chalk.red("Please Try Again - Network Bug"));
               process.exit(0);
@@ -158,7 +166,7 @@ module.exports = {
                 }
               }
             }, function(err) {
-              fs.unlinkSync(path.join(process.cwd(),  "resourcedownloadedfvm.zip"));
+              // fs.unlinkSync(path.join(process.cwd(),  "resourcedownloadedfvm.zip"));
               //Remove and put resource in folder
               var pathtoupdate = path.join(process.cwd(),  "resources", resource_name);
 
