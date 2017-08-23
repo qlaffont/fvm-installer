@@ -54,6 +54,10 @@ module.exports = {
           console.log(zip_url);
 
           request.get(zip_url).parse(binaryParser).buffer().end(function(err, resp) {
+            if(!res.body){
+              console.log(chalk.red("Please Try Again - Network Bug"));
+              process.exit(0);
+            }
             fs.writeFileSync("resourcedownloadedfvm.zip", resp.body);
             var zipfolder = "";
 
@@ -139,6 +143,10 @@ module.exports = {
           console.log(zip_url);
 
           request.get(zip_url).parse(binaryParser).buffer().end(function(err, resp) {
+            if(!res.body){
+              console.log(chalk.red("Please Try Again - Network Bug"));
+              process.exit(0);
+            }
             fs.writeFileSync("resourcedownloadedfvm.zip", resp.body);
             var zipfolder = "";
 
@@ -229,6 +237,6 @@ module.exports = {
     });
   },
   check_resource_format: function (resource_name){
-    return /(^(\w+)\/(\w+)@\S+$)|(^(\w+)\/(\w+)$)/g.test(resource_name);
+    return /(^([^/]+)\/([^/]+)@\S+$)|(^([^/]+)\/([^/]+)$)/g.test(resource_name);
   }
 };
