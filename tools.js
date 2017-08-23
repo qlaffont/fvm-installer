@@ -55,7 +55,7 @@ module.exports = {
 
           request.get(zip_url).parse(binaryParser).buffer().end(function(err, resp) {
             if(err){
-              console.log(chalk.red("Please Try Again - Network Bug or Github Down"));
+              console.log(chalk.red("Please Try Again in 60 Minutes - Exceed Github Rate Limite or Github Down"));
               process.exit(0);
             }
             if(!res.body){
@@ -148,7 +148,7 @@ module.exports = {
 
           request.get(zip_url).parse(binaryParser).buffer().end(function(err, resp) {
             if(err){
-              console.log(chalk.red("Please Try Again - Network Bug or Github Down"));
+              console.log(chalk.red("Please Try Again in 60 Minutes - Exceed Github Rate Limite or Github Down "));
               process.exit(0);
             }
             if(!res.body){
