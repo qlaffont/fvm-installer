@@ -24,7 +24,7 @@ var latestVersion = require('latest-version');
 latestVersion('fvm-installer').then(function(lastversion) {
     if (lastversion != pjson.version){
       console.log("New Version "+chalk.red("v"+pjson.version)+ " -> "+chalk.green("v"+lastversion));
-      console.log("Please do :");
+      console.log("Please run:");
       console.log(chalk.green("npm update -g fvm-installer"));
       console.log("\n");
     }
@@ -40,12 +40,12 @@ latestVersion('fvm-installer').then(function(lastversion) {
       console.log("\n");
       console.log("Arguments:\n");
       console.log("  init  \t\t\t\t\t\t\t Initialise FiveM Installer directory");
-      console.log("  install (--save) (--folder=<folder_name>) <package_name> \t Install Github Package (Option Save : Save in scripts.json)");
-      console.log("  update \t\t\t\t\t\t\t Check if some packages can be upgraded");
-      console.log("  update (--save) <package_name> \t\t\t\t Update Package (Option Save : Save in scripts.json)");
-      console.log("  delete (--save) <package_name> \t\t\t\t Delete Package (Option Save : Save in scripts.json)");
+      console.log("  install (--save) (--folder=<folder_name>) <package_name> \t Install Github Package (Option Save: Save in scripts.json)");
+      console.log("  update \t\t\t\t\t\t\t Check if any packages can be upgraded");
+      console.log("  update (--save) <package_name> \t\t\t\t Update Package (Option Save: Save in scripts.json)");
+      console.log("  delete (--save) <package_name> \t\t\t\t Delete Package (Option Save: Save in scripts.json)");
       console.log("\n");
-      console.log(chalk.cyan("Package name format is : ") + chalk.bold.cyan("user/repo") + chalk.cyan(" (Source GitHub). Exemple: fivemtools/ft_ui"));
+      console.log(chalk.cyan("Package name format is: ") + chalk.bold.cyan("user/repo") + chalk.cyan(" (Source GitHub). Example: fivemtools/ft_ui"));
     }else {
       var operation = arguments[2];
 
@@ -77,7 +77,7 @@ latestVersion('fvm-installer').then(function(lastversion) {
                 if(tools.check_resource_format(resource)){
                   promiseArray.push(tools.download_resource(resource, dataConfigFile, save, specifiedfolder));
                 }else{
-                  console.log(chalk.red("Error: Resource Not Found ! Please provide a resource name with a good format : user/repository or user/repository@version"));
+                  console.log(chalk.red("Error: Resource not found! Please provide a resource name in the correct format: user/repository or user/repository@version"));
                   console.log("\n");
                   process.exit(0);
                 }
@@ -87,7 +87,7 @@ latestVersion('fvm-installer').then(function(lastversion) {
             Promise.all(promiseArray).then(function(values) {
               console.log("\n");
 
-              console.log(chalk.green("Installation Successful !"));
+              console.log(chalk.green("Installation successful"));
             }).catch(function(data) {
               process.exit(0);
             });
@@ -109,7 +109,7 @@ latestVersion('fvm-installer').then(function(lastversion) {
             Promise.all(promiseArray).then(function(values) {
               console.log("\n");
 
-              console.log(chalk.green("Installation Successful !"));
+              console.log(chalk.green("Installation successful!"));
             }).catch(function(data) {
               process.exit(0);
             });
@@ -138,7 +138,7 @@ latestVersion('fvm-installer').then(function(lastversion) {
                 if(tools.check_resource_format(resource)){
                   promiseArray.push(tools.update_resource(resource, dataConfigFile.resources[resource], dataConfigFile, save));
                 }else{
-                  console.log(chalk.red("Error: Resource Not Found ! Please provide a resource name with a good format : user/repository or user/repository@version"));
+                  console.log(chalk.red("Error: Resource not found! Please provide a resource name in the correct format: user/repository or user/repository@version"));
                   console.log("\n");
                   process.exit(0);
                 }
@@ -146,7 +146,7 @@ latestVersion('fvm-installer').then(function(lastversion) {
             });
 
             Promise.all(promiseArray).then(function(values) {
-              console.log(chalk.green("Update Successful !"));
+              console.log(chalk.green("Update successful!"));
             }).catch(function(data) {
               process.exit(0);
             });
@@ -169,7 +169,7 @@ latestVersion('fvm-installer').then(function(lastversion) {
           break;
 
         case "init":
-          console.log("Initialisation of FiveM Installer directory !")
+          console.log("Initialisation of FiveM Installer directory")
           console.log("\n");
           var dataConfigFile = new ConfigFile(false);
 
@@ -204,18 +204,18 @@ latestVersion('fvm-installer').then(function(lastversion) {
                 if(tools.check_resource_format(resource)){
                   tools.deleteresource(resource, save, dataConfigFile)
                 }else{
-                  console.log(chalk.red("Error: Resource Not Found ! Please provide a resource name with a good format : user/repository or user/repository@version"));
+                  console.log(chalk.red("Error: Resource not found! Please provide a resource name in the correct format: user/repository or user/repository@version"));
                   console.log("\n");
                   process.exit(0);
                 }
               }
             });
           }else{
-            console.log(chalk.red("Error: please give ressource name to remove"));
+            console.log(chalk.red("Error: Please provide a ressource name to remove"));
           }
           break;
         default:
-          console.log(chalk.red("Error ! Please provide a good arguments : install / update / init "));
+          console.log(chalk.red("Error: Please provide valid arguments: install, update, init"));
       }
     }
 
