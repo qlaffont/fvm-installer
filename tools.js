@@ -19,7 +19,7 @@ module.exports = {
     }
 
     return new Promise(function(resolve, reject) {
-      request.get('https://api.github.com/repos/' + resource_user + "/" + resource_name + "/tags").set('Accept', 'application/json').end(function(err, res) {
+      request.get('https://api.github.com/repos/' + resource_user + "/" + resource_name + "/tags").set('Accept', 'application/json').set('User-Agent', 'fvm-installer').end(function(err, res) {
         if (err) {
           console.log(chalk.red("Error: Resource "+ resource_user + "/" + resource_name + " Not Found or not possible to download !"));
           console.log("\n");
@@ -53,7 +53,7 @@ module.exports = {
           var zip_url = data.zipball_url;
           console.log(zip_url);
 
-          request.get(zip_url).parse(binaryParser).buffer().end(function(err, resp) {
+          request.get(zip_url).set('User-Agent', 'fvm-installer').parse(binaryParser).buffer().end(function(err, resp) {
             if(err){
               console.log(chalk.red("Please Try Again in 60 Minutes - Exceed Github Rate Limite or Github Down"));
               process.exit(0);

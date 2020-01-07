@@ -1,4 +1,4 @@
-FiveM Installer
+FiveM Installer [NO LONGER MAINTAINED]
 --------------
 FiveM Installer is a package for FiveM Server (FX). This scripts download resources to build your server.
 **La version française est en bas de la page.**
