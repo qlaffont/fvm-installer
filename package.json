@@ -1,6 +1,6 @@
 {
   "name": "fvm-installer",
-  "version": "1.1.4",
+  "version": "1.1.5",
   "description": "Resource Installer for FiveM",
   "main": "./fvm",
   "repository": {
@@ -28,14 +28,14 @@
     "node": ">=0.12"
   },
   "dependencies": {
-    "adm-zip": "^0.4.7",
-    "chalk": "^2.1.0",
+    "adm-zip": "^0.4.13",
+    "chalk": "^3.0.0",
     "co": "^4.6.0",
     "co-prompt": "^1.0.0",
-    "extract-zip": "^1.6.5",
-    "latest-version": "^3.1.0",
-    "rimraf": "^2.6.2",
-    "superagent": "^5.0.2",
+    "extract-zip": "^1.6.7",
+    "latest-version": "^5.1.0",
+    "rimraf": "^3.0.0",
+    "superagent": "^5.2.1",
     "superagent-binary-parser": "^1.0.1"
   }
 }
