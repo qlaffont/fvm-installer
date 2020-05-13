@@ -75,12 +75,12 @@ module.exports = {
                     });
                   });
                 }
-            })
-              if (err) {
-                console.log( chalk.red('Please Try Again in 60 Minutes - Exceed Github Rate Limite or Github Down') );
+              })
+              .catch(err => {
+                console.log(chalk.red('Please Try Again in 60 Minutes - Exceed Github Rate Limite or Github Down'));
                 process.exit(0);
-              }
-            });          
+              })
+          });          
       })
       .catch(err => {
         console.log(chalk.red("Error: Resource "+ resource_user + "/" + resource_name + " Not Found or not possible to download !"));
