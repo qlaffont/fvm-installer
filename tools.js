@@ -1,38 +1,38 @@
-var binaryParser = require('superagent-binary-parser');
-var request = require('superagent');
-var chalk = require('chalk');
-var fs = require('fs');
-var extract = require('extract-zip');
-var rimraf = require('rimraf');
-var path = require('path');
+const binaryParser = require('superagent-binary-parser');
+const request = require('superagent');
+const chalk = require('chalk');
+const fs = require('fs');
+const extract = require('extract-zip');
+const rimraf = require('rimraf');
+const path = require('path');
 
 module.exports = {
-  download_resource: function(resource, dataConfigFile, save, specifiedfolder) {
-    var arraytosplit = resource.split("/");
-    var resource_user = arraytosplit[0];
-    var resource_name = arraytosplit[1].split("@")[0] || arraytosplit[1];
-    var resource_version;
-    var versionarray = arraytosplit[1].split("@");
+  download_resource: (resource, dataConfigFile, save, specifiedfolder) => {
+    const arraytosplit = resource.split("/");
+    const resource_user = arraytosplit[0];
+    const resource_name = arraytosplit[1].split("@")[0] || arraytosplit[1];
+    const resource_version;
+    const versionarray = arraytosplit[1].split("@");
 
     if(versionarray.length > 0){
       resource_version = versionarray[1] || "";
     }
 
-    return new Promise(function(resolve, reject) {
-      request.get('https://api.github.com/repos/' + resource_user + "/" + resource_name + "/tags").set('Accept', 'application/json').set('User-Agent', 'fvm-installer').end(function(err, res) {
+    return new Promise((resolve, reject) => {
+      request.get('https://api.github.com/repos/' + resource_user + "/" + resource_name + "/tags").set('Accept', 'application/json').set('User-Agent', 'fvm-installer').end((err, res) => {
         if (err) {
           console.log(chalk.red("Error: Resource "+ resource_user + "/" + resource_name + " Not Found or not possible to download !"));
           console.log("\n");
           reject("Error: Resource "+ resource_user + "/" + resource_name + " Not Found or not possible to download !");
           return;
         } else {
-          var data;
+          const data;
 
           if(resource_version == ""){
             data = res.body[0];
             resource_version = data.name;
           }else{
-            data = res.body.find(function(element){
+            data = res.body.find((element) => {
               if(element.name == resource_version){
                 return true;
               }else{
@@ -50,10 +50,10 @@ module.exports = {
 
 
           console.log(chalk.green("Installing " + resource_name + " - " + resource_version));
-          var zip_url = data.zipball_url;
+          const zip_url = data.zipball_url;
           console.log(zip_url);
 
-          request.get(zip_url).set('User-Agent', 'fvm-installer').parse(binaryParser).buffer().end(function(err, resp) {
+          request.get(zip_url).set('User-Agent', 'fvm-installer').parse(binaryParser).buffer().end((err, resp) => {
             if(err){
               console.log(chalk.red("Please Try Again in 60 Minutes - Exceed Github Rate Limite or Github Down"));
               process.exit(0);
@@ -63,19 +63,19 @@ module.exports = {
               process.exit(0);
             }
             fs.writeFileSync("resourcedownloadedfvm.zip", resp.body);
-            var zipfolder = "";
+            const zipfolder = "";
 
             extract("resourcedownloadedfvm.zip", {
               dir: path.join(process.cwd(),  "resources"),
-              onEntry: function(fileunzipped, zip) {
+              onEntry: (fileunzipped, zip) => {
                 if (zipfolder == "") {
                   zipfolder = fileunzipped.fileName;
                 }
               }
-            }, function(err) {
+            }, (err) => {
               fs.unlinkSync(path.join(process.cwd(),  "resourcedownloadedfvm.zip"));
               //Remove and put resource in folder
-              var pathtoinstall = path.join(process.cwd(),  "resources", resource_name);
+              const pathtoinstall = path.join(process.cwd(),  "resources", resource_name);
 
               if(specifiedfolder != ""){
                 pathtoinstall = path.join(process.cwd(),  "resources", "[" + specifiedfolder + "]", resource_name, "/");
@@ -83,7 +83,7 @@ module.exports = {
                     fs.mkdirSync(path.join(process.cwd(),  "resources", "[" + specifiedfolder + "]"));
                 }
               }
-              rimraf(pathtoinstall, function() {
+              rimraf(pathtoinstall, _ => {
 
                 fs.rename(path.join(process.cwd(),  "resources", zipfolder), pathtoinstall, function(err) {
                   console.log("\n");
@@ -100,32 +100,32 @@ module.exports = {
       });
     });
   },
-  update_resource: function(resource, previous_version, dataConfigFile, save) {
-    var arraytosplit = resource.split("/");
-    var resource_user = arraytosplit[0];
-    var resource_name = arraytosplit[1].split("@")[0] || arraytosplit[1];
-    var resource_version;
-    var versionarray = arraytosplit[1].split("@");
+  update_resource: (resource, previous_version, dataConfigFile, save) => {
+    const arraytosplit = resource.split("/");
+    const resource_user = arraytosplit[0];
+    const resource_name = arraytosplit[1].split("@")[0] || arraytosplit[1];
+    const resource_version;
+    const versionarray = arraytosplit[1].split("@");
 
     if(versionarray.length > 0){
       resource_version = versionarray[1] || "";
     }
 
-    return new Promise(function(resolve, reject) {
-      request.get('https://api.github.com/repos/' + resource_user + "/" + resource_name + "/tags").set('Accept', 'application/json').end(function(err, res) {
+    return new Promise((resolve, reject) => {
+      request.get('https://api.github.com/repos/' + resource_user + "/" + resource_name + "/tags").set('Accept', 'application/json').end((err, res) => {
         if (err) {
           console.log(chalk.red("Error: Resource "+ resource_user + "/" + resource_name + " Not Found or not possible to update !"));
           console.log("\n");
           reject("Error: Resource "+ resource_user + "/" + resource_name + " Not Found or not possible to update !");
           return;
         } else {
-          var data;
+          const data;
 
           if(resource_version == ""){
             data = res.body[0];
             resource_version = data.name;
           }else{
-            data = res.body.find(function(element){
+            data = res.body.find((element) => {
               if(element.name == resource_version){
                 return true;
               }else{
@@ -146,7 +146,7 @@ module.exports = {
           var zip_url = data.zipball_url;
           console.log(zip_url);
 
-          request.get(zip_url).parse(binaryParser).buffer().end(function(err, resp) {
+          request.get(zip_url).parse(binaryParser).buffer().end((err, resp) => {
             if(err){
               console.log(chalk.red("Please Try Again in 60 Minutes - Exceed Github Rate Limite or Github Down "));
               process.exit(0);
@@ -160,15 +160,15 @@ module.exports = {
 
             extract("resourcedownloadedfvm.zip", {
               dir: path.join(process.cwd(),  "resources"),
-              onEntry: function(fileunzipped, zip) {
+              onEntry: (fileunzipped, zip) => {
                 if (zipfolder == "") {
                   zipfolder = fileunzipped.fileName;
                 }
               }
-            }, function(err) {
+            }, (err) => {
               // fs.unlinkSync(path.join(process.cwd(),  "resourcedownloadedfvm.zip"));
               //Remove and put resource in folder
-              var pathtoupdate = path.join(process.cwd(),  "resources", resource_name);
+              const pathtoupdate = path.join(process.cwd(),  "resources", resource_name);
 
               if(dataConfigFile.folder[resource_user+"/"+resource_name]){
                 pathtoupdate = path.join(process.cwd(),  "resources", "[" + dataConfigFile.folder[resource_user+"/"+resource_name] + "]", resource_name);
@@ -177,9 +177,9 @@ module.exports = {
                     fs.mkdirSync(path.join(process.cwd(),  "resources", "[" + dataConfigFile.folder[resource_user+"/"+resource_name] + "]"));
                 }
               }
-              rimraf(pathtoupdate, function() {
+              rimraf(pathtoupdate, _ => {
 
-                fs.rename(path.join(process.cwd(),  "resources", zipfolder), pathtoupdate, function(err) {
+                fs.rename(path.join(process.cwd(),  "resources", zipfolder), pathtoupdate, (err) => {
                   console.log("\n");
                   if(save){
                     if(dataConfigFile.folder[resource_user+"/"+resource_name]){
@@ -198,19 +198,19 @@ module.exports = {
       });
     });
   },
-  deleteresource: function(resource, save, dataConfigFile){
-    return new Promise(function(resolve, reject) {
-      var arraytosplit = resource.split("/");
-      var resource_user = arraytosplit[0];
-      var resource_name = arraytosplit[1].split("@")[0] || arraytosplit[1];
+  deleteresource: (resource, save, dataConfigFile) => {
+    return new Promise((resolve, reject) => {
+      const arraytosplit = resource.split("/");
+      const resource_user = arraytosplit[0];
+      const resource_name = arraytosplit[1].split("@")[0] || arraytosplit[1];
 
-      var pathtodelete = path.join(process.cwd(),  "resources", resource_name);
+      const pathtodelete = path.join(process.cwd(),  "resources", resource_name);
 
       if(dataConfigFile.folder[resource]){
         pathtodelete = path.join(process.cwd(),  "resources", "[" + dataConfigFile.folder[resource] + "]", resource_name)
       }
 
-      rimraf(pathtodelete, function() {
+      rimraf(pathtodelete, _ => {
         if (save){
           dataConfigFile.removeResource(resource);
         }
@@ -219,20 +219,20 @@ module.exports = {
       });
     });
   },
-  check_update_resource: function(resource, resource_version){
-    var arraytosplit = resource.split("/");
-    var resource_user = arraytosplit[0];
-    var resource_name = arraytosplit[1].split("@")[0] || arraytosplit[1];
+  check_update_resource: (resource, resource_version) => {
+    const arraytosplit = resource.split("/");
+    const resource_user = arraytosplit[0];
+    const resource_name = arraytosplit[1].split("@")[0] || arraytosplit[1];
 
-    return new Promise(function(resolve, reject) {
-      request.get('https://api.github.com/repos/' + resource_user + "/" + resource_name + "/tags").set('Accept', 'application/json').end(function(err, res) {
+    return new Promise((resolve, reject) => {
+      request.get('https://api.github.com/repos/' + resource_user + "/" + resource_name + "/tags").set('Accept', 'application/json').end((err, res) => {
         if (err) {
           console.log(chalk.red("Error: Resource "+ resource_user + "/" + resource_name + " Not Found or not possible to update !"));
           console.log("\n");
           reject("Error: Resource "+ resource_user + "/" + resource_name + " Not Found or not possible to update !");
           return;
         } else {
-          var version = res.body[0].name;
+          const version = res.body[0].name;
 
           if(resource_version != version){
             console.log(resource + "\t"+ "Installed: " + resource_version+"\t" +chalk.green(" New Version:"+version)+"\n");
@@ -244,7 +244,7 @@ module.exports = {
       });
     });
   },
-  check_resource_format: function (resource_name){
+  check_resource_format: (resource_name) => {
     return /(^([^/]+)\/([^/]+)@\S+$)|(^([^/]+)\/([^/]+)$)/g.test(resource_name);
   }
 };

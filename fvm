@@ -1,12 +1,12 @@
 #!/usr/bin/env node
 
-var request = require('superagent');
-var chalk = require('chalk');
-var fs = require('fs');
-var tools = require('./tools');
-var ConfigFile = require('./ConfigFileClass');
-var co = require('co');
-var prompt = require('co-prompt');
+const request = require('superagent');
+const chalk = require('chalk');
+const fs = require('fs');
+const tools = require('./tools');
+const ConfigFile = require('./ConfigFileClass');
+const co = require('co');
+const prompt = require('co-prompt');
 
 
 var pjson = require('./package.json');
@@ -19,9 +19,9 @@ console.log("===========================");
 console.log("\n");
 
 
-var latestVersion = require('latest-version');
+const latestVersion = require('latest-version');
 
-latestVersion('fvm-installer').then(function(lastversion) {
+latestVersion('fvm-installer').then((lastversion) => {
     if (lastversion != pjson.version){
       console.log("New Version "+chalk.red("v"+pjson.version)+ " -> "+chalk.green("v"+lastversion));
       console.log("Please run:");
@@ -30,9 +30,9 @@ latestVersion('fvm-installer').then(function(lastversion) {
     }
 
 
-    var arguments = process.argv;
-    var save = false;
-    var specifiedfolder = "";
+    const arguments = process.argv;
+    const save = false;
+    const specifiedfolder = "";
 
     //Helper
     if(arguments.length == 2){
@@ -53,10 +53,10 @@ latestVersion('fvm-installer').then(function(lastversion) {
         case "install":
           if(arguments[3]){
 
-            var dataConfigFile = new ConfigFile(true);
+            const dataConfigFile = new ConfigFile(true);
 
 
-            var resourcestoinstall = arguments;
+            const resourcestoinstall = arguments;
             resourcestoinstall.splice(0, 3);
 
             promiseArray = [];
@@ -72,7 +72,7 @@ latestVersion('fvm-installer').then(function(lastversion) {
             });
 
             //Can give multiple resources to install
-            resourcestoinstall.forEach(function(resource){
+            resourcestoinstall.forEach((resource) => {
               if(resource != "--save" && resource.substring(0, 9) != "--folder="){
                 if(tools.check_resource_format(resource)){
                   promiseArray.push(tools.download_resource(resource, dataConfigFile, save, specifiedfolder));
@@ -84,56 +84,56 @@ latestVersion('fvm-installer').then(function(lastversion) {
               }
             });
 
-            Promise.all(promiseArray).then(function(values) {
+            Promise.all(promiseArray).then((values) => {
               console.log("\n");
 
               console.log(chalk.green("Installation successful"));
-            }).catch(function(data) {
+            }).catch((data) => {
               process.exit(0);
             });
 
           }else{
             //Check if existing file and if exist install packages
-            var dataConfigFile = new ConfigFile(true);
+            const dataConfigFile = new ConfigFile(true);
 
             promiseArray = [];
 
-            Object.keys(dataConfigFile.resources).forEach(function(key) {
-                var resource = key + "@" +dataConfigFile.resources[key];
+            Object.keys(dataConfigFile.resources).forEach((key) => {
+                const resource = key + "@" +dataConfigFile.resources[key];
                 if(tools.check_resource_format(resource)){
                   promiseArray.push(tools.download_resource(resource, dataConfigFile, save, dataConfigFile.folder[key]));
                 }
               }
             );
 
-            Promise.all(promiseArray).then(function(values) {
+            Promise.all(promiseArray).then((values) => {
               console.log("\n");
 
               console.log(chalk.green("Installation successful!"));
-            }).catch(function(data) {
+            }).catch((data) => {
               process.exit(0);
             });
           }
           break;
 
         case "update":
-          var dataConfigFile = new ConfigFile(true);
+          const dataConfigFile = new ConfigFile(true);
 
           if(arguments[3]){
 
-            var resourcestoupdate = arguments;
+            const resourcestoupdate = arguments;
             resourcestoupdate.splice(0, 3);
 
             promiseArray = [];
 
-            resourcestoupdate.forEach(function(resource){
+            resourcestoupdate.forEach((resource) => {
               if(resource == "--save"){
                 save = true;
               }
             });
 
             //Can give multiple resources to install
-            resourcestoupdate.forEach(function(resource){
+            resourcestoupdate.forEach((resource) => {
               if(resource != "--save"){
                 if(tools.check_resource_format(resource)){
                   promiseArray.push(tools.update_resource(resource, dataConfigFile.resources[resource], dataConfigFile, save));
@@ -145,7 +145,7 @@ latestVersion('fvm-installer').then(function(lastversion) {
               }
             });
 
-            Promise.all(promiseArray).then(function(values) {
+            Promise.all(promiseArray).then((values) => {
               console.log(chalk.green("Update successful!"));
             }).catch(function(data) {
               process.exit(0);
@@ -155,13 +155,13 @@ latestVersion('fvm-installer').then(function(lastversion) {
 
             promiseArray = [];
 
-            Object.keys(dataConfigFile.resources).forEach(function(key) {
+            Object.keys(dataConfigFile.resources).forEach((key) => {
               promiseArray.push(tools.check_update_resource(key, dataConfigFile.resources[key]));
             });
 
-            Promise.all(promiseArray).then(function(values) {
+            Promise.all(promiseArray).then((values) => {
               console.log("To upgrade packages, do " + chalk.green("fvm update <package_name>"));
-            }).catch(function(data) {
+            }).catch((data) => {
               process.exit(0);
             });
           }
@@ -171,12 +171,12 @@ latestVersion('fvm-installer').then(function(lastversion) {
         case "init":
           console.log("Initialisation of FiveM Installer directory")
           console.log("\n");
-          var dataConfigFile = new ConfigFile(false);
+          const dataConfigFile = new ConfigFile(false);
 
           co(function *() {
-            var nameConfig = yield prompt('Name: ');
-            var authorConfig = yield prompt('Author: ');
-            var websiteConfig = yield prompt('Website: ');
+            const nameConfig = yield prompt('Name: ');
+            const authorConfig = yield prompt('Author: ');
+            const websiteConfig = yield prompt('Website: ');
             dataConfigFile.initConfigFile(nameConfig, authorConfig, websiteConfig);
             console.log("\n");
             console.log(chalk.green("Initialisation of FiveM Installer directory finish ! You can now use fvm installer."));
@@ -186,13 +186,13 @@ latestVersion('fvm-installer').then(function(lastversion) {
 
         case "remove":
           if(arguments[3]){
-            var dataConfigFile = new ConfigFile(true);
-            var resourcestodelete = arguments;
+            const dataConfigFile = new ConfigFile(true);
+            const resourcestodelete = arguments;
             resourcestodelete.splice(0, 3);
 
             promiseArray = [];
 
-            resourcestodelete.forEach(function(resource){
+            resourcestodelete.forEach((resource) => {
               if(resource == "--save"){
                 save = true;
               }

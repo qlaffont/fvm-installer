@@ -1,7 +1,7 @@
-var fileTools = require('./file-tools');
-var chalk = require('chalk');
+const fileTools = require('./file-tools');
+const chalk = require('chalk');
 
-function ConfigFile(existingFile) {
+const ConfigFile = (existingFile) => {
   if (existingFile == true){
     if(!fileTools.check_existing_config_file()){
       console.log(chalk.red("Please initialise your FiveM Server Folder with : ")+ chalk.bold.red("fvm init"));
@@ -9,7 +9,7 @@ function ConfigFile(existingFile) {
       process.exit(0);
     }
 
-    var file = fileTools.get_config_file();
+    const file = fileTools.get_config_file();
 
     if(!(typeof file === 'object' && typeof file.name === 'string' && typeof file.author === 'string' && typeof file.website === 'string' && typeof file.resources === 'object' && typeof file.folder === 'object')){
       console.log(chalk.red("Please delete your resources.json file because data are corrupted."));
@@ -32,11 +32,11 @@ function ConfigFile(existingFile) {
 }
 
 
-ConfigFile.prototype.getResources = function() {
+ConfigFile.prototype.getResources = _ => {
   return this.resources;
 };
 
-ConfigFile.prototype.addResource = function(resource, resource_version, specifiedfolder) {
+ConfigFile.prototype.addResource = (resource, resource_version, specifiedfolder)  => {
   this.resources[resource] = undefined;
   this.resources[resource] = resource_version;
 
@@ -48,17 +48,17 @@ ConfigFile.prototype.addResource = function(resource, resource_version, specifie
   this.saveConfigFile();
 };
 
-ConfigFile.prototype.removeResource = function(resource) {
+ConfigFile.prototype.removeResource = (resource) => {
   this.resources[resource] = undefined;
   this.folder[resource] = undefined;
   this.saveConfigFile();
 };
 
-ConfigFile.prototype.saveConfigFile = function() {
+ConfigFile.prototype.saveConfigFile = _ => {
   fileTools.set_config_file(JSON.stringify({"name": this.name, "author": this.author, "website": this.website, "resources": this.resources, "folder": this.folder}, null, "\t"));
 };
 
-ConfigFile.prototype.initConfigFile = function(name, author, website) {
+ConfigFile.prototype.initConfigFile = (name, author, website) => {
   this.name = name;
   this.author = author;
   this.website = website;
