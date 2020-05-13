@@ -18,7 +18,7 @@ module.exports = {
     if (versionarray.length > 0) resource_version = versionarray[1] || "";
 
     return new Promise(async (resolve, reject) => {
-      await request.get('https://api.github.com/repos/' + resource_user + "/" + resource_name + "/tags").set('Accept', 'application/json').set('User-Agent', 'fvm-installer').end()
+      await request.get('https://api.github.com/repos/' + resource_user + "/" + resource_name + "/tags").set('Accept', 'application/json').set('User-Agent', 'fvm-installer')
       .then(async res => {
           var data;
 
@@ -46,7 +46,6 @@ module.exports = {
             .set('User-Agent', 'fvm-installer')
             .parse(binaryParser)
             .buffer()
-            .end()
             .then(async resp => {
               if (!resp.body) {
                 console.log(chalk.red('Please Try Again - Network Bug'));
@@ -100,7 +99,7 @@ module.exports = {
     if(versionarray.length > 0) resource_version = versionarray[1] || "";
     
     return new Promise(async (resolve, reject) => {
-      request.get('https://api.github.com/repos/' + resource_user + "/" + resource_name + "/tags").set('Accept', 'application/json').end()
+      await request.get('https://api.github.com/repos/' + resource_user + "/" + resource_name + "/tags").set('Accept', 'application/json')
       .then(async res => {
           var data;
 
@@ -123,24 +122,13 @@ module.exports = {
           var zip_url = data.zipball_url;
           console.log(zip_url);
 
-          request.get(zip_url).parse(binaryParser).buffer().end((err, resp) => {
-            if(err){
-              console.log(chalk.red("Please Try Again in 60 Minutes - Exceed Github Rate Limite or Github Down "));
-              process.exit(0);
-            }
+          await request.get(zip_url).parse(binaryParser).buffer()
+          .then(res => {
             if(!res.body){
               console.log(chalk.red("Please Try Again - Network Bug"));
               process.exit(0);
-            }          
-      })
-      .catch(err => {
-        console.log(chalk.red("Error: Resource "+ resource_user + "/" + resource_name + " Not Found or not possible to update !"));
-        console.log("\n");
-        reject("Error: Resource "+ resource_user + "/" + resource_name + " Not Found or not possible to update !");
-        return;
-      });
-
-            fs.writeFileSync("resourcedownloadedfvm.zip", resp.body);
+            }
+            fs.writeFileSync("resourcedownloadedfvm.zip", res.body);
             var zipfolder = "";
             try  {
               await extract("resourcedownloadedfvm.zip", {
@@ -166,7 +154,18 @@ module.exports = {
                   resolve('Update Successful of ' + resource_user + '/' + resource_name);
                 });
               });
-            }
+            }            
+          })
+          .catch(err => {
+              console.log(chalk.red("Please Try Again in 60 Minutes - Exceed Github Rate Limite or Github Down "));
+              process.exit(0);
+          })
+      })
+      .catch(err => {
+        console.log(chalk.red("Error: Resource "+ resource_user + "/" + resource_name + " Not Found or not possible to update !"));
+        console.log("\n");
+        reject("Error: Resource "+ resource_user + "/" + resource_name + " Not Found or not possible to update !");
+        return;
       });
     });
   },
@@ -194,7 +193,7 @@ module.exports = {
     const resource_name = arraytosplit[1].split("@")[0] || arraytosplit[1];
 
     return new Promise(async (resolve, reject) => {
-      await request.get('https://api.github.com/repos/' + resource_user + "/" + resource_name + "/tags").set('Accept', 'application/json').end()
+      await request.get('https://api.github.com/repos/' + resource_user + "/" + resource_name + "/tags").set('Accept', 'application/json')
       .then(res => {
         const version = res.body[0].name;
         
