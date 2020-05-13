@@ -11,7 +11,7 @@ module.exports = {
     const arraytosplit = resource.split("/");
     const resource_user = arraytosplit[0];
     const resource_name = arraytosplit[1].split("@")[0] || arraytosplit[1];
-    const resource_version;
+    var resource_version;
     const versionarray = arraytosplit[1].split("@");
 
     if(versionarray.length > 0){
@@ -26,7 +26,7 @@ module.exports = {
           reject("Error: Resource "+ resource_user + "/" + resource_name + " Not Found or not possible to download !");
           return;
         } else {
-          const data;
+          var data;
 
           if(resource_version == ""){
             data = res.body[0];
@@ -63,7 +63,7 @@ module.exports = {
               process.exit(0);
             }
             fs.writeFileSync("resourcedownloadedfvm.zip", resp.body);
-            const zipfolder = "";
+            var zipfolder = "";
 
             extract("resourcedownloadedfvm.zip", {
               dir: path.join(process.cwd(),  "resources"),
@@ -75,7 +75,7 @@ module.exports = {
             }, (err) => {
               fs.unlinkSync(path.join(process.cwd(),  "resourcedownloadedfvm.zip"));
               //Remove and put resource in folder
-              const pathtoinstall = path.join(process.cwd(),  "resources", resource_name);
+              var pathtoinstall = path.join(process.cwd(),  "resources", resource_name);
 
               if(specifiedfolder != ""){
                 pathtoinstall = path.join(process.cwd(),  "resources", "[" + specifiedfolder + "]", resource_name, "/");
@@ -104,7 +104,7 @@ module.exports = {
     const arraytosplit = resource.split("/");
     const resource_user = arraytosplit[0];
     const resource_name = arraytosplit[1].split("@")[0] || arraytosplit[1];
-    const resource_version;
+    var resource_version;
     const versionarray = arraytosplit[1].split("@");
 
     if(versionarray.length > 0){
@@ -119,7 +119,7 @@ module.exports = {
           reject("Error: Resource "+ resource_user + "/" + resource_name + " Not Found or not possible to update !");
           return;
         } else {
-          const data;
+          var data;
 
           if(resource_version == ""){
             data = res.body[0];

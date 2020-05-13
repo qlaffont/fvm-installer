@@ -31,8 +31,8 @@ latestVersion('fvm-installer').then((lastversion) => {
 
 
     const arguments = process.argv;
-    const save = false;
-    const specifiedfolder = "";
+    var save = false;
+    var specifiedfolder = "";
 
     //Helper
     if(arguments.length == 2){
@@ -53,7 +53,7 @@ latestVersion('fvm-installer').then((lastversion) => {
         case "install":
           if(arguments[3]){
 
-            const dataConfigFile = new ConfigFile(true);
+            var dataConfigFile = new ConfigFile(true);
 
 
             const resourcestoinstall = arguments;
@@ -94,7 +94,7 @@ latestVersion('fvm-installer').then((lastversion) => {
 
           }else{
             //Check if existing file and if exist install packages
-            const dataConfigFile = new ConfigFile(true);
+            dataConfigFile = new ConfigFile(true);
 
             promiseArray = [];
 
@@ -117,7 +117,7 @@ latestVersion('fvm-installer').then((lastversion) => {
           break;
 
         case "update":
-          const dataConfigFile = new ConfigFile(true);
+          dataConfigFile = new ConfigFile(true);
 
           if(arguments[3]){
 
@@ -171,7 +171,7 @@ latestVersion('fvm-installer').then((lastversion) => {
         case "init":
           console.log("Initialisation of FiveM Installer directory")
           console.log("\n");
-          const dataConfigFile = new ConfigFile(false);
+          dataConfigFile = new ConfigFile(false);
 
           co(function *() {
             const nameConfig = yield prompt('Name: ');
@@ -186,7 +186,7 @@ latestVersion('fvm-installer').then((lastversion) => {
 
         case "remove":
           if(arguments[3]){
-            const dataConfigFile = new ConfigFile(true);
+            dataConfigFile = new ConfigFile(true);
             const resourcestodelete = arguments;
             resourcestodelete.splice(0, 3);
 
