@@ -1,6 +1,7 @@
-FiveM Installer [NO LONGER MAINTAINED]
+FiveM Installer
 --------------
 FiveM Installer is a package for FiveM Server (FX). This scripts download resources to build your server.
+Is not longer maintained by me but by the community.
 **La version française est en bas de la page.**
 
 Compatible resources list: https://github.com/qlaffont/fvm-installer-list/blob/master/README.md
@@ -109,6 +110,7 @@ Delete Successful of fivemtools/ft_ui
 FiveM Installer
 --------------
 FiveM Installer est un utilitaire pour pouvoir télécharger des scripts de FiveM pour un serveur FX.
+Le projet n'est plus maintenu par moi mais par la communauté.
 
 Installation
 --------------
