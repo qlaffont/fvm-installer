@@ -9,7 +9,7 @@ const co = require('co');
 const prompt = require('co-prompt');
 
 
-var pjson = require('./package.json');
+const pjson = require('./package.json');
 console.log("\n");
 console.log("===========================");
 console.log("FiveM Installer v"+pjson.version);
