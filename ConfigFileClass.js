@@ -1,5 +1,5 @@
-var fileTools = require('./file-tools');
-var chalk = require('chalk');
+const fileTools = require('./file-tools');
+const chalk = require('chalk');
 
 function ConfigFile(existingFile) {
   if (existingFile == true){
