@@ -123,7 +123,7 @@ module.exports = {
           console.log(zip_url);
 
           await request.get(zip_url).parse(binaryParser).buffer()
-          .then(res => {
+          .then(async res => {
             if(!res.body){
               console.log(chalk.red("Please Try Again - Network Bug"));
               process.exit(0);
