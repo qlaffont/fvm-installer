@@ -58,7 +58,6 @@ module.exports = {
                   dir: path.join(process.cwd(), 'resources'),
                   onEntry: (fileunzipped, zip) => { if (zipfolder == '') zipfolder = fileunzipped.fileName; },
                 })
-              } catch (err) {
                   fs.unlinkSync(path.join(process.cwd(), 'resourcedownloadedfvm.zip'));
                   //Remove and put resource in folder
                   var pathtoinstall = path.join(process.cwd(), 'resources', resource_name);
@@ -73,8 +72,8 @@ module.exports = {
                       if (save) dataConfigFile.addResource(resource_user + '/' + resource_name, resource_version, specifiedfolder);
                       resolve('Install Successful of ' + resource_user + '/' + resource_name);
                     });
-                  });
-                }
+                  });                
+              } catch (err) { console.log (err) }
               })
               .catch(err => {
                 console.log(chalk.red('Please Try Again in 60 Minutes - Exceed Github Rate Limite or Github Down'));
@@ -130,12 +129,12 @@ module.exports = {
             }
             fs.writeFileSync("resourcedownloadedfvm.zip", res.body);
             var zipfolder = "";
-            try  {
-              await extract("resourcedownloadedfvm.zip", {
-                dir: path.join(process.cwd(),  "resources"),
-                onEntry: (fileunzipped, zip) => { if (zipfolder == "") zipfolder = fileunzipped.fileName; },
-              })               
-            } catch (err) {
+            try {
+              await extract('resourcedownloadedfvm.zip', {
+                dir: path.join(process.cwd(), 'resources'), onEntry: (fileunzipped, zip) => {
+                  if (zipfolder == '') zipfolder = fileunzipped.fileName;
+                },
+              });
               // fs.unlinkSync(path.join(process.cwd(),  "resourcedownloadedfvm.zip"));
               //Remove and put resource in folder
               var pathtoupdate = path.join(process.cwd(), 'resources', resource_name);
@@ -147,14 +146,14 @@ module.exports = {
                 fs.rename(path.join(process.cwd(), 'resources', zipfolder), pathtoupdate, (err) => {
                   console.log('\n');
                   if (save) {
-                    (dataConfigFile.folder[resource_user + '/' + resource_name]) 
+                    (dataConfigFile.folder[resource_user + '/' + resource_name])
                     ? dataConfigFile.addResource(resource_user + '/' + resource_name, resource_version, dataConfigFile.folder[resource_user + '/' + resource_name])
-                    : dataConfigFile.addResource(resource_user + '/' + resource_name, resource_version,'');
+                    : dataConfigFile.addResource(resource_user + '/' + resource_name, resource_version, '');
                   }
-                  resolve('Update Successful of ' + resource_user + '/' + resource_name);
+                  resolve('Update Successful of ' +  resource_user + '/' + resource_name);
                 });
               });
-            }            
+            } catch (err) { console.log (err) }            
           })
           .catch(err => {
               console.log(chalk.red("Please Try Again in 60 Minutes - Exceed Github Rate Limite or Github Down "));
